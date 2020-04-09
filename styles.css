@@ -1,0 +1,87 @@
+body {
+    font-family: "Helvetica";
+    display: grid;
+    grid-template-columns: repeat(600);
+    background-color: #7EA6C2;
+    padding:0;
+    margin:0;
+}
+h1 { 
+    font-family: Heveltica, sans-serif;
+    color: white;
+    text-align: center;
+    font-size: 5rem;
+    text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;    padding: 0;
+    margin: 0;
+}
+h2{
+    font-family: 'Roboto', sans-serif;
+    font-size: 3rem;
+    padding:0;
+    margin:0;
+}
+p {
+    font-size: 2rem;
+}
+form { 
+    padding: 3px; width: 100%; height: 50px
+}
+form input { 
+    border: 0; padding: 10px; width: 30%; margin-right: .5%; 
+    border: 1px solid black;
+}
+button {
+    padding: 0;
+    border: none;
+    font: inherit;
+    color: black;
+    background-color: white;
+    cursor: pointer;
+    /* create a small space when buttons wrap on 2 lines */
+  margin: 2px 0;
+
+  /* invisible border (will be colored on hover/focus) */
+  border: solid 1px transparent;
+  border-radius: 4px;
+
+  /* size comes from text & padding (no width/height) */
+  padding: 0.5em 1em;
+
+  /* make sure colors have enough contrast! */
+  color: #ffffff;
+  background-color: #9555af;
+}
+div {
+    background-color: #E23632;
+    padding: 10px;
+    width: 50vw;
+    left: 25vw;
+    position: relative;
+}
+
+#theme-select {
+    border: none;
+    background-color: white;
+    padding:0;
+    margin:0;
+    border:0;
+}
+
+body[data-theme='dark'] {
+    background-color:#121212;
+}
+
+html[data-theme='dark'] body {
+    background-color: #292929;
+    color: lightgray;
+}
+
+html[data-theme='dark'] div {
+    background-color: #1E1E1E;
+}
+
+html[data-theme='dark'] h2 {
+    color: rgb(255, 126, 126);
+}
+
+

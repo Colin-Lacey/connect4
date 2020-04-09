@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="gamestyles.css">
+    </head>
+    <script src="socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
+    <script>
+    let opponent = null;
+    let color = null;
+    let player = null;
+    let active = false;
+    $(function(){
+        var socket = io();
+        socket.on('checkIfNewUser', function() {
+                if (Cookies.get('user') === undefined) socket.emit('confirmIfNewUser',true)
+                else socket.emit('confirmIfNewUser',false);
+        });
+        socket.on('getCookies', function () {
+            user = Cookies.get('user');
+            theme = Cookies.get('theme');
+            code = Cookies.get('code');
+            $('.username').empty();
+            $('.username').prepend(user);
+            $('.code').empty();
+            $('.code').prepend(code);
+            socket.emit('returnCookies', user, theme, code);
+            socket.emit('initialize game');
+        });
+        socket.on('setCookies', function (user, theme, code) {
+            Cookies.set('user', user);
+            Cookies.set('theme', theme);
+            Cookies.set('code', code);
+            $('.username').empty();
+            $('.username').prepend(user);
+            $('.code').empty();
+            $('.code').prepend(code);
+        }); 
+        socket.on('game initialized',function(playerIndex){
+            if (playerIndex === 1) {
+                color = 'red';
+                player = 1;
+            }
+            else if (playerIndex === 2) {
+                color = 'yellow';
+                player = 2
+            }
+        })
+        $('.column').hover(function(){
+            if (!active) return;
+            $(this).children('.top').children('.disc').css('background-color',color);
+        }, function(){
+            $(this).children('.top').children('.disc').css('background-color','white');
+        });
+        $('.column').click(function(){
+            if (!active) return;
+            $(this).children('.top').children('.disc').css('background-color','white');
+            let columnID = $(this).attr('id');
+            let columnIndex = columnID.substring(3);
+            socket.emit('send move',columnIndex);
+        });
+        socket.on('update gamestate',function(gamestate,playerTurn){
+            if (player === playerTurn) {
+                active = true;
+                $('#gameinfo').html("It's currently your turn!");
+            }
+            else {
+                active = false;
+                $('#gameinfo').html("It's currently your opponent's turn!");
+            }
+            //loops to draw the gamestate on the board
+            let r = 0;
+            gamestate.forEach(row => {
+                let c = 0;
+                row.forEach(elem => {
+                    if (elem === 0) $('#circ'+r.toString()+c.toString()).css('background-color','white');
+                    else if (elem === 1) $('#circ'+r.toString()+c.toString()).css('background-color','red');
+                    else if (elem === 2) $('#circ'+r.toString()+c.toString()).css('background-color','yellow');
+                    c++;
+                })
+                r++;
+            });
+        });
+        
+    });
+
+    </script>  
+    <body>
+        <div class="gameboard">
+            <div id="col0" class="column">
+                <span class="top">
+                    <span class="disc"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ00"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ10"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ20"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ30"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ40"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ50"></span>            
+                </span>
+            </div>
+            <div id="col1" class="column">
+                <span class="top">
+                    <span class="disc"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ01"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ11"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ21"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ31"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ41"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ51"></span>            
+                </span>
+            </div>
+            <div id="col2" class="column">
+                <span class="top">
+                    <span class="disc"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ02"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ12"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ22"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ32"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ42"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ52"></span>            
+                </span>
+            </div>
+            <div id="col3" class="column">
+                <span class="top">
+                    <span class="disc"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ03"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ13"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ23"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ33"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ43"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ53"></span>            
+                </span>
+            </div>
+            <div id="col4" class="column">
+                <span class="top">
+                    <span class="disc"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ04"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ14"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ24"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ34"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ44"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ54"></span>            
+                </span>
+            </div>
+            <div id="col5" class="column">
+                <span class="top">
+                    <span class="disc"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ05"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ15"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ25"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ35"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ45"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ55"></span>            
+                </span>
+            </div>
+            <div id="col6" class="column">
+                <span class="top">
+                    <span class="disc"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ06"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ16"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ26"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ36"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ46"></span>            
+                </span>
+                <span class="square">
+                    <span class="circle" id="circ56"></span>            
+                </span>
+            </div>
+        </div>
+        <h1 id='gameinfo'></h1>
+    </body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="styles.css">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    </head>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
+    <script>
+        $(function () {
+            var socket = io();
+            $('.rand').click(function(){
+                socket.emit('join random');
+                return false;
+            });
+
+            $('#startGame').click(function(e){
+                e.preventDefault();
+                let gameCode = $('#gameCode').val();
+                $('#gameCode').val('');
+                socket.emit('join game',gameCode);
+                return false;
+            });
+            socket.on('redirect', function() {
+                window.location.replace("game.html");
+            });
+
+            $('#changeNick').click(function(e){
+                e.preventDefault();
+                let newNick = $('#customNick').val();
+                $('#customNick').val('');
+                //Cookies.set('user',newNick);
+                socket.emit('change username',newNick);
+            });
+            socket.on('checkIfNewUser', function() {
+                if (Cookies.get('user') === undefined) socket.emit('confirmIfNewUser',true)
+                else socket.emit('confirmIfNewUser',false);
+            });
+            socket.on('getCookies', function(){
+                user = Cookies.get('user');
+                theme = Cookies.get('theme');
+                code = Cookies.get('code');
+                $('.username').empty();
+                $('.username').prepend(user);
+                $('.code').empty();
+                $('.code').prepend(code);
+                socket.emit('returnCookies',user,theme,code);
+            });
+            socket.on('setCookies',function(user,theme,code){
+                Cookies.set('user', user);
+                Cookies.set('theme', theme);
+                Cookies.set('code', code);
+                $('.username').empty();
+                $('.username').prepend(user);
+                $('.code').empty();
+                $('.code').prepend(code);
+            });
+        });
+    </script>  
+    <body>
+        <div id='theme-select'>
+            <select>
+                <option>Light</option>
+                <option>Dark</option>
+                <option>Crazy</option>
+            </select>
+        </div>
+        <h1>Connect <span style="color:red;font-size:8rem;">4</span></h1>
+        <div id = 'username'>
+            <h2>Profile</h2>
+            <p>Welcome to Connect Four <b><span class='username'></span>!</b></p>
+            <p>It isn't necessary, but feel free to enter a custom username if you'd like.</p>
+            <form action="">
+            <input id="customNick" autocomplete="off" /><button id="changeNick">Change Username</button>
+            </form>
+        </div>
+        <div id = 'start'>
+            <h2>Create Game</h2>
+            <p>To start a new game, give this code to your opponent:</p>
+            <b><p class='code'></p></b>
+            <p>Tell them to visit this site and enter the code in the box to the right.</p>
+            <p>Once they've done this your game will start!</p>
+        </div>
+        <div id = 'join'>
+            <h2>Join Specific Game</h2>
+            <p>To join an existing game, enter a game code provided by another user.</p>
+            <form action=""> 
+            <input id="gameCode" autocomplete="off" /><button id="startGame">Start Game</button>
+            </form>
+        </div>
+        <div id = 'random'>
+            <h2>Join Random Game</h2>
+            <p>To start/join a game with a random opponent, click here.</p>
+            <button class="rand">Random Game</button>
+        </div>
+    </body>
+</html>

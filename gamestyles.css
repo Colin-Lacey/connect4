@@ -1,0 +1,103 @@
+body {
+    display: grid;
+    font-family: Arial, Helvetica, sans-serif;
+    grid-template-columns: repeat(7,100px);
+}
+
+div {
+    display: grid;
+    grid-template-rows: repeat(6,100px);
+}
+
+h1 {
+    position: absolute;
+    bottom: 0;
+}
+
+.disc {
+    fill: red;
+}
+
+.top {
+    height: 100px;
+    width: 100px;
+    margin:0;
+    padding:0;
+    border:0;
+    text-align: center;
+    display: flex; justify-content: center; align-items: center;
+}
+
+.top > .circle {
+    border: 0px;
+}
+
+.top > .disc {
+    border: 0px;
+}
+
+.square {
+    height: 100px;
+    width: 100px;
+    background-color: rgb(4, 118, 175);
+    margin:0;
+    padding:0;
+    border:0;
+    text-align: center;
+    display: flex; justify-content: center; align-items: center;
+}
+
+.disc {
+    height: 80px;
+    width: 80px;
+    line-height: 100px;
+    background-color: white;
+    border: 3px solid black;
+    border-radius: 50%;
+}
+
+.circle {
+    height: 80px;
+    width: 80px;
+    line-height: 100px;
+    background-color: white;
+    border: 3px solid black;
+    border-radius: 50%;
+  }
+
+svg {
+    background-color: rgb(4, 118, 175);
+    margin:0;
+    padding:0;
+    border:0;
+}
+
+.top {
+    background-color: white;
+}
+
+.top > circle {
+    stroke: white;
+}
+
+#col0 {
+    grid-column-start: 1;
+}
+#col1 {
+    grid-column-start: 2;
+}
+#col2 {
+    grid-column-start: 3;
+}
+#col3 {
+    grid-column-start: 4;
+}
+#col4 {
+    grid-column-start: 5;
+}
+#col5 {
+    grid-column-start: 6;
+}
+#col6 {
+    grid-column-start: 7;
+}
