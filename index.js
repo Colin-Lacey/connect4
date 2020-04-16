@@ -99,7 +99,6 @@ io.on('connection', function (socket) {
     }
   });
   socket.on('initialize game',function() {
-    console.log(socket.nickname + " is trying to initialize a game")
     console.log(gameQueue);
     let otherSocketName = null;
     gameQueue.forEach(game => {
@@ -113,7 +112,6 @@ io.on('connection', function (socket) {
         }
       }
     })
-    console.log(users);
     if (users.has(otherSocketName)) {
       var sockets = io.sockets.sockets;
       for (var socketId in sockets) {
@@ -141,6 +139,7 @@ io.on('connection', function (socket) {
           sock.inGame = true;
           socket.inGame = true;
           gameIndex++;
+          console.log("Game initialized");
         }
       }
     }
