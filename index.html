@@ -39,7 +39,10 @@
             });
             socket.on('checkIfNewUser', function() {
                 if (Cookies.get('user') === undefined) socket.emit('confirmIfNewUser',true)
-                else socket.emit('confirmIfNewUser',false);
+                else {
+                    $('#back').html('back');
+                    socket.emit('confirmIfNewUser',false) 
+                }
             });
             socket.on('getCookies', function(){
                 user = Cookies.get('user');
@@ -59,44 +62,66 @@
                 $('.username').prepend(user);
                 $('.code').empty();
                 $('.code').prepend(code);
+                switch (theme){
+                    case 'light':
+                        $('html').attr('data-theme', '') 
+                        break;
+                    case 'dark': 
+                        $('html').attr('data-theme', 'dark') ;
+                        break;
+                    case 'crazy': 
+                        $('html').attr('data-theme', 'crazy') 
+                        break;
+                }
+            });
+            $('#light').click(function(){
+                Cookies.set('theme','light');
+                background='white'
+                $('.column').children('.top').children('.disc').css('background-color',background);
+                $('html').attr('data-theme', '') ;
+            });
+            $('#dark').click(function(){
+                Cookies.set('theme','dark');
+                background='#292929'
+                $('.column').children('.top').children('.disc').css('background-color',background);
+                $('html').attr('data-theme', 'dark') ;
+            });
+            $('#crazy').click(function(){
+                Cookies.set('theme','crazy');
+                background='white'
+                $('.column').children('.top').children('.disc').css('background-color',background);
+                $('html').attr('data-theme', 'crazy') ;
             });
         });
     </script>  
     <body>
-        <div id='theme-select'>
-            <select>
-                <option>Light</option>
-                <option>Dark</option>
-                <option>Crazy</option>
-            </select>
-        </div>
-        <h1>Connect <span style="color:red;font-size:8rem;">4</span></h1>
-        <div id = 'username'>
-            <h2>Profile</h2>
-            <p>Welcome to Connect Four <b><span class='username'></span>!</b></p>
-            <p>It isn't necessary, but feel free to enter a custom username if you'd like.</p>
-            <form action="">
-            <input id="customNick" autocomplete="off" /><button id="changeNick">Change Username</button>
-            </form>
-        </div>
-        <div id = 'start'>
-            <h2>Create Game</h2>
-            <p>To start a new game, give this code to your opponent:</p>
-            <b><p class='code'></p></b>
-            <p>Tell them to visit this site and enter the code in the box to the right.</p>
-            <p>Once they've done this your game will start!</p>
-        </div>
-        <div id = 'join'>
-            <h2>Join Specific Game</h2>
-            <p>To join an existing game, enter a game code provided by another user.</p>
-            <form action=""> 
-            <input id="gameCode" autocomplete="off" /><button id="startGame">Start Game</button>
-            </form>
-        </div>
-        <div id = 'random'>
-            <h2>Join Random Game</h2>
-            <p>To start/join a game with a random opponent, click here.</p>
-            <button class="rand">Random Game</button>
-        </div>
+        <h1>Connect <span style="color:#ED254E;font-size:8rem;">4</span></h1>
+        <div class='content-grid'>
+            <div id = 'profile'>
+                <p>Welcome <span id=back></span> to Connect Four, <b><span class='username'></span>!</b></p>
+                <form action="">
+                    <input id="customNick" autocomplete="off" /><button id="changeNick">Change Username</button>
+                </form>
+            </div>
+                <div class = 'start'>
+                    <h2>Create Game</h2>
+                    <p>To start a new game, give this code to your opponent:</p>
+                    <b><p class='code'></p></b>
+                    <p>Tell them to visit this site and enter the code in the Join Game box to the right.</p>
+                    <p>Once they've done this your game will start!</p>
+                </div>
+                <div class = 'content'>
+                    <h2>Join Game</h2>
+                    <p>To join an existing game, enter a game code provided by another user.</p>
+                    <form action=""> 
+                    <input id="gameCode" autocomplete="off" /><button id="startGame">Join Game</button>
+                    </form>
+                </div>
+                <div class = 'content'>
+                    <h2>Random Game</h2>
+                    <p>To start/join a game with a random opponent, click here.</p>
+                    <button class="rand">Random Game</button>
+                </div>
+            </div>
     </body>
 </html>

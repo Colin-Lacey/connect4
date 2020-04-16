@@ -1,103 +1,168 @@
-body {
-    display: grid;
-    font-family: Arial, Helvetica, sans-serif;
-    grid-template-columns: repeat(7,100px);
+@media all and (orientation:portrait) {
+    .gameboard {
+        width:100vw;
+        height:100vw;
+        position:absolute;
+        bottom:0;
+        left:0;
+    }
+    p {
+        padding-bottom: 10px;
+    }
+    #theme-select {
+        right:0;
+        display: flex;
+        flex-direction: column;
+    }
 }
 
-div {
-    display: grid;
-    grid-template-rows: repeat(6,100px);
+@media all and (orientation:landscape){
+    .gameboard {
+        width:45vw;
+        height:45vw;
+        margin: auto;
+    }
+    p {
+        text-align: center;
+    }
 }
 
-h1 {
-    position: absolute;
-    bottom: 0;
+#gameinfo {
+    font-size: 3rem;
+    font-family: 'Roboto',sans-serif;
 }
 
-.disc {
-    fill: red;
+#matchup {
+    font-size: 3rem;
+    font-family: 'Roboto',sans-serif;
 }
 
-.top {
-    height: 100px;
-    width: 100px;
-    margin:0;
-    padding:0;
-    border:0;
+  /* https://www.w3schools.com/css/css3_buttons.asp */
+  button {
+    background-color: rgb(0, 158, 237);
+    color: white;
+    padding: 10px 32px;
     text-align: center;
-    display: flex; justify-content: center; align-items: center;
-}
-
-.top > .circle {
-    border: 0px;
-}
-
-.top > .disc {
-    border: 0px;
-}
-
-.square {
-    height: 100px;
-    width: 100px;
-    background-color: rgb(4, 118, 175);
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1rem;
     margin:0;
-    padding:0;
-    border:0;
-    text-align: center;
-    display: flex; justify-content: center; align-items: center;
-}
-
-.disc {
-    height: 80px;
-    width: 80px;
-    line-height: 100px;
-    background-color: white;
-    border: 3px solid black;
-    border-radius: 50%;
-}
-
-.circle {
-    height: 80px;
-    width: 80px;
-    line-height: 100px;
-    background-color: white;
-    border: 3px solid black;
-    border-radius: 50%;
+    border: white solid 1px;
   }
 
-svg {
-    background-color: rgb(4, 118, 175);
-    margin:0;
+#theme-select {
+    position:absolute;
+    right:0;
+    display: flex;
+    flex-direction: column;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
     padding:0;
+    margin:0;
     border:0;
 }
 
+.gameboard {
+    display: grid;
+    grid-template-columns: repeat(7,1fr);
+    margin-top: auto;
+    padding-bottom:0;
+    margin-bottom:0;
+    border-bottom:0;
+}
+
+.column {
+    display: grid;
+    grid-template-rows: repeat(7,1fr);
+    width: 100%;
+}
+
+.square, .top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(4, 118, 175);
+}
 .top {
     background-color: white;
 }
 
-.top > circle {
-    stroke: white;
+.circle, .top-circle, .disc {   
+    width: 80%;
+    height: 80%;
+    background-color: white;
+    border: 3px solid black;
+    border-radius: 50%;
+}
+.disc {border: none;}
+
+.info {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    flex-grow:1;
 }
 
-#col0 {
-    grid-column-start: 1;
+p {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    margin-bottom: auto; 
 }
-#col1 {
-    grid-column-start: 2;
+
+
+html[data-theme='dark'] body {
+    background-color: #292929;
 }
-#col2 {
-    grid-column-start: 3;
+html[data-theme='dark'] button {
+    border: black solid 1px;
 }
-#col3 {
-    grid-column-start: 4;
+html[data-theme='dark'] .circle {
+    background-color: #292929;
 }
-#col4 {
-    grid-column-start: 5;
+html[data-theme='dark'] .top-circle {
+    background-color: #292929;
 }
-#col5 {
-    grid-column-start: 6;
+html[data-theme='dark'] .disc {
+    background-color: #292929;
 }
-#col6 {
-    grid-column-start: 7;
+html[data-theme='dark'] .top {
+    background-color: #292929;
+}
+html[data-theme='dark'] p {
+    color: white;
+}
+
+
+html[data-theme='crazy'] body {
+    background-image: url(/images/doge.jpg);
+}
+html[data-theme='crazy'] .circle {
+    background-color: white ;
+}
+html[data-theme='crazy'] .square {
+    background-image: repeating-radial-gradient(#73C2FB, white, #F7A8B8 15%);
+}
+html[data-theme='crazy'] p {
+    background-color: #292929;
+    color: #F7A8B8;
+}
+html[data-theme='crazy'] button {
+    font-family: 'Papyrus', cursive;
+}
+html[data-theme='crazy'] #matchup {
+    font-family: 'Comic Sans MS', cursive;
+}
+html[data-theme='crazy'] #gameinfo {
+    font-family: cursive;
+}
+html[data-theme='crazy'] .disc {
+    background-color: #D3C596;
+}
+html[data-theme='crazy'] .top {
+    background-color: #D3C596;
 }
